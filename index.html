@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dilip's Accounting & Bookkeeping Services Pty Ltd</title>
+
+  <!-- Stylish fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #07070a;
+      --panel: rgba(15, 15, 20, 0.72);
+      --panel-2: rgba(15, 15, 20, 0.55);
+      --border: rgba(255,255,255,0.12);
+      --text: rgba(255,255,255,0.88);
+      --muted: rgba(255,255,255,0.68);
+      --accent: #87f7ff;
+      --accent2: #b48cff;
+      --danger: #ff6b6b;
+      --shadow: 0 12px 40px rgba(0,0,0,0.45);
+      --radius: 18px;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      overflow-x: hidden;
+    }
+
+    /* Blurry accounting-style wallpaper */
+    .bg-wrap{
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: #000;
+    }
+    .bg-wrap::before{
+      content:"";
+      position:absolute;
+      inset:-40px;
+      background-image:
+        linear-gradient(180deg, rgba(0,0,0,0.65), rgba(0,0,0,0.85)),
+        url("https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=2000&q=70");
+      background-size: cover;
+      background-position: center;
+      filter: blur(12px) grayscale(25%) contrast(105%);
+      transform: scale(1.06);
+    }
+    .bg-wrap::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(900px 480px at 20% 20%, rgba(180,140,255,0.18), transparent 55%),
+        radial-gradient(700px 420px at 80% 30%, rgba(135,247,255,0.14), transparent 55%),
+        radial-gradient(900px 600px at 50% 90%, rgba(255,255,255,0.06), transparent 60%);
+      pointer-events:none;
+    }
+
+    .container{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 26px 16px 80px;
+    }
+
+    /* Top bar */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Title: stylish, 14px as requested */
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+      min-width: 220px;
+    }
+    .brand .title{
+      font-family: "Playfair Display", serif;
+      font-size: 14px;            /* requested */
+      letter-spacing: 0.6px;
+      line-height: 1.2;
+      margin:0;
+      text-transform: none;
+      user-select: none;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      max-width: 62vw;
+    }
+    .brand .subtitle{
+      font-size: 12px;
+      color: var(--muted);
+      margin:0;
+    }
+
+    .actions{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .btn{
+      appearance:none;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-weight: 600;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      font-size: 13px;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.2); }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(135,247,255,0.18), rgba(180,140,255,0.18));
+      border-color: rgba(135,247,255,0.22);
+    }
+    .btn.danger{
+      border-color: rgba(255,107,107,0.35);
+      background: rgba(255,107,107,0.10);
+    }
+
+    /* Tabs */
+    .tabs{
+      margin-top: 14px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 10px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      backdrop-filter: blur(10px);
+    }
+    .tab{
+      border: 1px solid transparent;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight: 700;
+      font-size: 13px;
+      transition: background .12s ease, border-color .12s ease;
+    }
+    .tab:hover{ background: rgba(255,255,255,0.09); }
+    .tab.active{
+      background: rgba(135,247,255,0.12);
+      border-color: rgba(135,247,255,0.28);
+    }
+
+    /* Main panel */
+    main{
+      margin-top: 14px;
+      padding: 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .section{
+      display:none;
+      animation: fadeIn .16s ease;
+    }
+    .section.active{ display:block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2{
+      margin: 2px 0 10px;
+      font-size: 18px;
+      letter-spacing: 0.2px;
+    }
+    p, li{
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+    .muted{ color: var(--muted); }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 14px;
+    }
+    @media (max-width: 860px){
+      .grid{ grid-template-columns: 1fr; }
+      .brand .title{ max-width: 100%; }
+    }
+
+    .card{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    /* Home email in 10px as requested */
+    .email-small{
+      font-size: 10px;            /* requested */
+      font-weight: 700;
+      letter-spacing: 0.25px;
+      color: rgba(255,255,255,0.85);
+    }
+    .email-small a{ color: var(--accent); text-decoration: none; }
+    .email-small a:hover{ text-decoration: underline; }
+
+    .list{
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    .link-list a{
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .link-list a:hover{ text-decoration: underline; }
+
+    /* Footer ABN: different font and colour */
+    footer{
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      backdrop-filter: blur(10px);
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .abn{
+      font-family: "Space Mono", monospace; /* different font */
+      color: var(--accent2);               /* different colour */
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      font-size: 13px;
+    }
+
+    /* Editable mode */
+    [contenteditable="true"]{
+      outline: 2px dashed rgba(135,247,255,0.28);
+      border-radius: 10px;
+      padding: 6px 8px;
+      background: rgba(135,247,255,0.06);
+    }
+    .hint{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    /* Certifications uploads */
+    .upload-row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+    input[type="file"]{
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 100%;
+    }
+    .file-item{
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-top: 8px;
+    }
+    .file-item strong{
+      font-size: 13px;
+      color: rgba(255,255,255,0.9);
+    }
+    .file-item small{
+      color: var(--muted);
+      display:block;
+      margin-top: 2px;
+    }
+    .pill{
+      font-family: "Space Mono", monospace;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.05);
+      white-space: nowrap;
+    }
+
+    /* Contact */
+    .contact-actions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-wrap" aria-hidden="true"></div>
+
+  <div class="container">
+    <header>
+      <div class="brand">
+        <p class="title">𝐃𝐢𝐥𝐢𝐩'𝐬 𝐀𝐜𝐜𝐨𝐮𝐧𝐭𝐢𝐧𝐠 &amp; Bookkeeping 𝐒𝐞𝐫𝐯𝐢𝐜𝐞𝐬 Pty Ltd.</p>
+        <p class="subtitle">Accounting • Bookkeeping • BAS • Payroll • Adelaide &amp; Remote</p>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="editToggle" type="button">✏️ Edit Mode: OFF</button>
+        <button class="btn" id="saveBtn" type="button" title="Save your edits in this browser">💾 Save Changes</button>
+        <button class="btn danger" id="resetBtn" type="button" title="Reset saved edits in this browser">↩ Reset Saved</button>
+      </div>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="Website tabs">
+      <button class="tab active" data-tab="home" role="tab" aria-selected="true">Home</button>
+      <button class="tab" data-tab="about" role="tab" aria-selected="false">About</button>
+      <button class="tab" data-tab="services" role="tab" aria-selected="false">Services</button>
+      <button class="tab" data-tab="contact" role="tab" aria-selected="false">Contact</button>
+      <button class="tab" data-tab="links" role="tab" aria-selected="false">Links</button>
+      <button class="tab" data-tab="certifications" role="tab" aria-selected="false">Certification</button>
+    </nav>
+
+    <main>
+      <!-- HOME -->
+      <section id="home" class="section active">
+        <div class="grid">
+          <div class="card">
+            <h2>Welcome</h2>
+
+            <div data-edit="homeText">
+              <p>Hello, my name is Dilip Khanal. I have 4–7 years of experience in accounting and financial services.</p>
+
+              <p>If you run a small, medium, or large business, I can help with all your accounting and bookkeeping needs, including setting up a bookkeeping system. I support NDIS providers and local businesses.</p>
+
+              <p>If you are looking for an experienced local Accountant, Bookkeeper, or BAS Agent, I support businesses across Adelaide with a wide range of services, including:</p>
+
+              <ul class="list">
+                <li>Payroll</li>
+                <li>Accounts payable and receivable</li>
+                <li>BAS lodgement</li>
+                <li>Bank reconciliations</li>
+                <li>Financial reporting</li>
+              </ul>
+
+              <p>I also offer remote services, so I can assist you wherever you are located.</p>
+            </div>
+
+            <p class="email-small" data-edit="homeEmail">
+              Please feel free to contact me at
+              <a href="mailto:dilipkhanal8@gmail.com">dilipkhanal8@gmail.com</a>
+            </p>
+
+            <p class="hint">Tip: Turn ON Edit Mode to modify any text, then click “Save Changes”.</p>
+          </div>
+
+          <div class="card">
+            <h2>Quick Services</h2>
+            <ul class="list" data-edit="homeQuickList">
+              <li>Bookkeeping setup (Xero / MYOB)</li>
+              <li>Payroll &amp; Superannuation</li>
+              <li>BAS / IAS support</li>
+              <li>Bank reconciliations</li>
+              <li>Financial reporting</li>
+              <li>NDIS provider support</li>
+            </ul>
+
+            <div class="contact-actions">
+              <a class="btn primary" href="mailto:dilipkhanal8@gmail.com">📩 Email Me</a>
+              <a class="btn" href="#contact" data-go="contact">📝 Enquiry Form</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about" class="section">
+        <div class="card">
+          <h2>About</h2>
+
+          <div data-edit="aboutText">
+            <p>Dilip Kumar is a finance and accounting professional with a strong foundation in financial services aligned with Australian standards. He has completed the following nationally recognized and accredited qualifications:</p>
+
+            <ul class="list">
+              <li>Awarded Formal studies in Financial Services (2022)</li>
+              <li>Awarded Certificate in Accounting and Bookkeeping (2025)</li>
+              <li>Registered BAS Agent (Units approved by the TPB under the Tax Agent Services Act - (TASA)</li>
+              <li>Awarded Formal Certificate in Retail</li>
+              <li>Diploma In Business Administration</li>
+              <li>Certified Xero Advisor User &amp; Certified Xero Payroll User</li>
+              <li>Certified in Microsoft Excel</li>
+            </ul>
+
+            <p>Dilip specializes in a variety of accounting tasks, including bookkeeping, BAS lodgement, payroll, accounts payable/receivable, bank reconciliation, and individual income tax returns. He is also proficient in Xero setup and Microsoft Excel, and is committed to helping businesses stay compliant and optimize their financial processes.</p>
+
+            <p>Currently working part-time in accounting, Dilip is focused on supporting local businesses and continuously developing his expertise in the field.</p>
+
+            <p>If you are a small to large business owner looking for an accounting professional, then you are on the right page</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES -->
+      <section id="services" class="section">
+        <div class="card">
+          <h2>Services</h2>
+
+          <div data-edit="servicesText">
+            <ul class="list">
+              <li>Accounts payable</li>
+              <li>Account Receivable</li>
+              <li>Payroll &amp; Superannuation</li>
+              <li>Bank reconciliations</li>
+              <li>BAS/IAS lodgement</li>
+              <li>Bookkeeping</li>
+              <li>Financial assessments and reporting</li>
+              <li>Finance Administration</li>
+              <li>Accounting Software Set-Up</li>
+              <li>Single Touch Payroll(STP)</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" class="section">
+        <div class="grid">
+          <div class="card">
+            <h2>Contact</h2>
+
+            <div data-edit="contactText">
+              <p><strong>Email for queries</strong> — <a href="mailto:dilipkhanal8@gmail.com">dilipkhanal8@gmail.com</a></p>
+              <p class="muted">You can also submit your enquiry using the form link below.</p>
+            </div>
+
+            <div class="contact-actions">
+              <a class="btn primary" href="mailto:dilipkhanal8@gmail.com">📩 Email for Queries</a>
+              <a class="btn" target="_blank" rel="noopener noreferrer"
+                 href="https://docs.google.com/forms/d/e/1FAIpQLSfKm91Tw7bE5LzPSRQMJpxk5VdSHNJ4UhTDThzqucItjG8kiA/viewform?edit2=2_ABaOnuey9ltv0AdAtrHHTDq-OJH8A_VWhVftmohXMo-cND7SxkucDPmK_ewFH5ilIg">
+                📝 Open Enquiry Form
+              </a>
+            </div>
+
+            <p class="hint">If you want the form embedded directly on the page, tell me and I’ll add an embedded iframe version.</p>
+          </div>
+
+          <div class="card">
+            <h2>Service Areas</h2>
+            <div data-edit="serviceAreas">
+              <p>Supporting businesses across <strong>Adelaide</strong> and providing <strong>remote services</strong> Australia-wide.</p>
+              <ul class="list">
+                <li>Small businesses</li>
+                <li>NDIS providers</li>
+                <li>Medium &amp; large organisations</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LINKS -->
+      <section id="links" class="section">
+        <div class="card link-list">
+          <h2>Links</h2>
+
+          <div data-edit="linksText">
+            <p><strong>Government &amp; Regulatory Bodies:</strong></p>
+            <ul class="list">
+              <li><a href="https://www.ato.gov.au/" target="_blank" rel="noopener noreferrer">ATO (Australian Taxation Office)</a> — Taxation laws, BAS/GST guides, employer obligations, PAYG, superannuation, and more.</li>
+              <li><a href="https://www.tpb.gov.au/" target="_blank" rel="noopener noreferrer">TPB Tax Practitioners Board</a> — BAS/Tax agent registration requirements, Code of Professional Conduct, CPE guidance.</li>
+              <li><a href="https://asic.gov.au/" target="_blank" rel="noopener noreferrer">ASIC (Australian Securities and Investments Commission)</a> — Business registrations, company compliance, and financial reporting standards.</li>
+              <li><a href="https://www.fairwork.gov.au/" target="_blank" rel="noopener noreferrer">Fair Work Ombudsman</a> — Employment law, minimum wage, awards, pay rates, and payroll obligations.</li>
+              <li><a href="https://www.cpaaustralia.com.au/" target="_blank" rel="noopener noreferrer">CPA Australia</a> — Professional accounting body, membership, and courses.</li>
+              <li><a href="https://www.publicaccountants.org.au/" target="_blank" rel="noopener noreferrer">Institute of Public Accountants (IPA)</a> — Third major accounting body, good for small practice accountants.</li>
+              <li><a href="https://www.businessaustralia.com/" target="_blank" rel="noopener noreferrer">Business Australia</a> — Advice, business setup services, insurance help, loans, and general support.</li>
+            </ul>
+
+            <p style="margin-top:14px;"><strong>Accounting Software</strong></p>
+            <ul class="list">
+              <li><a href="https://www.xero.com/au/" target="_blank" rel="noopener noreferrer">Xero</a> — www.xero.com/au</li>
+              <li><a href="https://www.myob.com/au" target="_blank" rel="noopener noreferrer">MYOB</a> — www.myob.com/au</li>
+              <li><a href="https://www.dayforce.com/au" target="_blank" rel="noopener noreferrer">Dayforce (Payroll, HR)</a></li>
+              <li><a href="https://www.sage.com/en-au/" target="_blank" rel="noopener noreferrer">Sage</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- CERTIFICATIONS -->
+      <section id="certifications" class="section">
+        <div class="grid">
+          <div class="card">
+            <h2>Certification</h2>
+
+            <p class="muted">Upload files here (e.g., certificates, PDFs, images). This list is saved in your browser so you can manage it later.</p>
+
+            <div class="upload-row">
+              <input id="certUpload" type="file" multiple />
+              <button class="btn primary" id="addFilesBtn" type="button">➕ Add to List</button>
+              <span class="pill" id="storagePill">Saved locally</span>
+            </div>
+
+            <div id="fileList" aria-live="polite" style="margin-top:10px;"></div>
+
+            <p class="hint">
+              Note: For privacy, the site stores only file names + dates (not the actual file content).  
+              If you want real file hosting (so visitors can download), tell me and I’ll add a “Download links” system for web hosting.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>Notes (Editable)</h2>
+            <div data-edit="certNotes">
+              <p>Add any notes here (for example: “Updated certificates in January 2026” or “TPB units completed”).</p>
+              <ul class="list">
+                <li>Upload new certificate files anytime</li>
+                <li>Turn on Edit Mode to update text</li>
+                <li>Click Save Changes to keep edits</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="muted">© <span id="year"></span> Dilip’s Accounting &amp; Bookkeeping Services Pty Ltd.</div>
+      <div class="abn" data-edit="abnText">ABN - 21197710276</div>
+    </footer>
+  </div>
+
+  <script>
+    // --- Tabs ---
+    const tabs = document.querySelectorAll(".tab");
+    const sections = document.querySelectorAll(".section");
+
+    function setActiveTab(tabId){
+      tabs.forEach(t => {
+        const active = t.dataset.tab === tabId;
+        t.classList.toggle("active", active);
+        t.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      sections.forEach(s => s.classList.toggle("active", s.id === tabId));
+      history.replaceState(null, "", "#" + tabId);
+    }
+
+    tabs.forEach(btn => btn.addEventListener("click", () => setActiveTab(btn.dataset.tab)));
+
+    // Allow “go to tab” links
+    document.querySelectorAll("[data-go]").forEach(a => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        setActiveTab(a.getAttribute("data-go"));
+      });
+    });
+
+    // Load tab from hash
+    const initialHash = (location.hash || "").replace("#","");
+    if(initialHash && document.getElementById(initialHash)) setActiveTab(initialHash);
+
+    // --- Edit mode + Save to localStorage ---
+    const editToggle = document.getElementById("editToggle");
+    const saveBtn = document.getElementById("saveBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const editableNodes = Array.from(document.querySelectorAll("[data-edit]"));
+
+    let editOn = false;
+
+    function applyEditMode(on){
+      editOn = on;
+      editableNodes.forEach(node => node.setAttribute("contenteditable", on ? "true" : "false"));
+      editToggle.textContent = on ? "✏️ Edit Mode: ON" : "✏️ Edit Mode: OFF";
+      editToggle.classList.toggle("primary", on);
+    }
+
+    function saveEdits(){
+      const payload = {};
+      editableNodes.forEach(node => {
+        payload[node.dataset.edit] = node.innerHTML;
+      });
+      localStorage.setItem("dilip_site_edits_v1", JSON.stringify(payload));
+      alert("Saved! Your edits are stored in this browser.");
+    }
+
+    function loadEdits(){
+      const raw = localStorage.getItem("dilip_site_edits_v1");
+      if(!raw) return;
+      try{
+        const payload = JSON.parse(raw);
+        editableNodes.forEach(node => {
+          const key = node.dataset.edit;
+          if(payload[key] != null) node.innerHTML = payload[key];
+        });
+      }catch(e){
+        console.warn("Could not load saved edits:", e);
+      }
+    }
+
+    function resetSaved(){
+      localStorage.removeItem("dilip_site_edits_v1");
+      localStorage.removeItem("dilip_site_certs_v1");
+      alert("Reset saved data. Refresh the page to see defaults.");
+    }
+
+    editToggle.addEventListener("click", () => applyEditMode(!editOn));
+    saveBtn.addEventListener("click", saveEdits);
+    resetBtn.addEventListener("click", resetSaved);
+
+    loadEdits();
+    applyEditMode(false);
+
+    // --- Certifications: store file names & dates in localStorage (editable future) ---
+    const certUpload = document.getElementById("certUpload");
+    const addFilesBtn = document.getElementById("addFilesBtn");
+    const fileList = document.getElementById("fileList");
+    const CERT_KEY = "dilip_site_certs_v1";
+
+    function getCerts(){
+      const raw = localStorage.getItem(CERT_KEY);
+      if(!raw) return [];
+      try { return JSON.parse(raw) || []; } catch { return []; }
+    }
+    function setCerts(list){
+      localStorage.setItem(CERT_KEY, JSON.stringify(list));
+    }
+
+    function renderCerts(){
+      const certs = getCerts();
+      fileList.innerHTML = "";
+      if(certs.length === 0){
+        fileList.innerHTML = '<p class="muted">No uploaded items yet.</p>';
+        return;
+      }
+      certs
+        .sort((a,b) => (b.addedAt||0)-(a.addedAt||0))
+        .forEach((c, idx) => {
+          const wrap = document.createElement("div");
+          wrap.className = "file-item";
+          const left = document.createElement("div");
+          left.innerHTML = `
+            <strong>${escapeHtml(c.name)}</strong>
+            <small>Added: ${new Date(c.addedAt).toLocaleString()}</small>
+          `;
+          const right = document.createElement("button");
+          right.className = "btn danger";
+          right.type = "button";
+          right.textContent = "Remove";
+          right.addEventListener("click", () => {
+            const updated = getCerts().filter(x => x.id !== c.id);
+            setCerts(updated);
+            renderCerts();
+          });
+          wrap.appendChild(left);
+          wrap.appendChild(right);
+          fileList.appendChild(wrap);
+        });
+    }
+
+    function addSelectedFiles(){
+      const files = Array.from(certUpload.files || []);
+      if(files.length === 0){
+        alert("Please choose files first.");
+        return;
+      }
+      const current = getCerts();
+      const now = Date.now();
+      const appended = files.map(f => ({
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + now,
+        name: f.name,
+        addedAt: now
+      }));
+      setCerts(current.concat(appended));
+      certUpload.value = "";
+      renderCerts();
+      alert("Added to your Certifications list (saved in this browser).");
+    }
+
+    addFilesBtn.addEventListener("click", addSelectedFiles);
+    renderCerts();
+
+    // --- Helpers ---
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
+    }
+  </script>
+</body>
+</html>
